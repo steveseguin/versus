@@ -911,7 +911,7 @@
 	
 	function toggleDisplay(UUID=true){
 		if (UUID===true){
-			var ele = document.querySelector('.selected[data-action-type="tab-section"]');
+			var ele = document.getElementById("container_"+UUID).querySelector('.selected[data-action-type="tab-section"]');
 			if (ele.dataset.uid){
 				UUID = ele.dataset.uid;
 			} else {
@@ -919,14 +919,14 @@
 			}
 		}
 		selectedUUID = UUID;
-		document.querySelectorAll('[data-action-type="tab-section"]').forEach(ele=>{
+		document.getElementById("container_"+UUID).querySelectorAll('[data-action-type="tab-section"]').forEach(ele=>{
 			if (selectedUUID && (selectedUUID == ele.dataset.uid)){
 				ele.classList.add("selected");
 			} else {
 				ele.classList.remove("selected");
 			}
 		});
-		document.querySelectorAll('.graphSection > [data-uid]').forEach(ele=>{
+		document.getElementById("container_"+UUID).querySelectorAll('.graphSection > [data-uid]').forEach(ele=>{
 			if (selectedUUID && (selectedUUID == ele.dataset.uid)){
 				ele.classList.remove("unselected");
 			} else {
