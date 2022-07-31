@@ -769,7 +769,7 @@
 			canvas.dataset.uid = uuid;
 			container.appendChild(canvas);
 			console.log("771");
-			toggleDisplay(true, container); 
+			toggleDisplay(true, getById("container_" + UUID)); 
 		}
 		
 		selfDestructElement(UUID, uuid);
@@ -990,7 +990,7 @@
 				container.querySelector("#tabs").appendChild(tab);
 				
 				console.log("993");
-				toggleDisplay(uuid, container2);
+				toggleDisplay(uuid, container);
 				
 			}
 			plotData(data[uuid], UUID, uuid);
