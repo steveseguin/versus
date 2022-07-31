@@ -12,10 +12,8 @@
 	border-radius: 7px 7px 0px 0;
     background-color: #98a5b0;
     margin: 0;
-    padding: 0;
     display: inline-block;
     vertical-align: bottom;
-    margin: 4px 0;
     border: 1px black solid;
     padding: 4px;
 	cursor:pointer;
@@ -31,6 +29,8 @@
     padding: 0;
     display: inline-block;
     vertical-align: bottom;
+	box-shadow: 0px 1px 3px #00000052;
+    margin-bottom: 5.5px;
 }
 
 #tabs>.tab:only-child {
@@ -47,7 +47,6 @@ body{
 	overflow: auto;
 	position: absolute;
 	background: #2e445c;
-	box-shadow: 20px 20px 60px #273a4e, -20px -20px 60px #354e6a;
 	scrollbar-color:#666 #201c29;
 }
 header{
@@ -262,6 +261,9 @@ label {
 	padding: 0;
 	margin: 0 auto;
 	width: 100%;
+	position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .disconnected{

@@ -597,7 +597,7 @@
 			if (e.data.frame){  // add `&sendframes` to the view link to trigger this event; it lets you capture video/audio from the parent window
 
 				if (!media.tracks[e.data.trackID]){
-					console.log(e.data);
+					log(e.data);
 					media.tracks[e.data.trackID] = {};
 					media.tracks[e.data.trackID].generator = new MediaStreamTrackGenerator({kind:e.data.kind});
 					media.tracks[e.data.trackID].stream = new MediaStream([media.tracks[e.data.trackID].generator]);
@@ -768,7 +768,6 @@
 			}
 			canvas.dataset.uid = uuid;
 			container.appendChild(canvas);
-			console.log("771");
 			toggleDisplay(true, getById("container_" + UUID)); 
 		}
 		
@@ -913,7 +912,6 @@
 	}
 	
 	function toggleDisplay(uid, container){
-		console.log(uid,container);
 		if (uid===true){
 			var ele = container.querySelector('.selected[data-action-type="tab-section"]');
 			if (ele && ele.dataset.uid){
@@ -954,7 +952,6 @@
 		}
 		
 		if (!size){
-			console.log("958");
 			toggleDisplay(null, container);
 			container.querySelectorAll('[data-no-scenes]').forEach(ele=>{
 				ele.classList.remove("hidden"); 
@@ -989,7 +986,6 @@
 				
 				container.querySelector("#tabs").appendChild(tab);
 				
-				console.log("993");
 				toggleDisplay(uuid, container);
 				
 			}
@@ -1000,6 +996,20 @@
 				if (span){
 					span.classList.remove("hidden");
 					span.innerHTML = "video bitrate:<br />"+numberWithCommas(parseInt(data[uuid].video_bitrate_kbps)) + " (kbps)";
+					span.dataset.uid = uuid;
+					span.dataset.UUID = UUID;
+					span.onclick = function(){
+						var bitrate = prompt("What bitrate do you want to try instead (kbps)?");
+						if (bitrate===null){return;}
+						
+						var msg = {};
+						msg.targetBitrate = parseInt(bitrate);
+						msg.requestAs = span.dataset.uid
+						msg.UUID = UUID;
+			
+						iframe.contentWindow.postMessage(msg, "*");
+						
+					}
 				}
 			}
 			var span = container2.querySelector('[data-scene-name]');
@@ -1130,12 +1140,8 @@
 		}
 		
 		if (iframe && streamID && !(streamID in streamIDs)){ // don't request what we already have requested.
-			iframe.contentWindow.postMessage({ requestStream: streamID }, "*"); 
-			console.log("Sending request for stream");
+			iframe.contentWindow.postMessage({ requestStream: streamID }, "*");
 			document.getElementById("modal").style.display = "none";
-		} else {
-			console.log(iframe);
-			console.log(streamID);
 		}
 	}
 
