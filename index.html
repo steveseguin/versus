@@ -116,7 +116,7 @@
 				<div>
 					<a class="github" href="https://github.com/steveseguin/vdoninja" rel="noopener" target="_blank" title="Star steveseguin/vdoninja on GitHub"></a>
 				</div>
-				<div style="cursor:pointer;" onclick="window.open('https://vdo.ninja');">Powered by VDO.Ninja</div>
+				<div style="cursor:pointer;" onclick="window.open('https://vdo.ninja');">For use with VDO.Ninja</div>
 			</div>
 		</div>
 	</div>
@@ -552,10 +552,10 @@
 		}
 		// &viewonly&showall&bitrate=35
 		//var iframesrc = "./index.html?sendframes&graphs&lightmode&bitrate=300&viewheight=180&viewwidth=320&transparent&cleanoutput&label=Stats_Monitor&scenelinkcodec=h264&manual&nopush&showall&scenelinkbitrate=12000&room="+roomname+additional+"&b64css="+injectCSS;
-		var iframesrc = "https://vdo.versus.cam/alpha/?sendframes&scene&room="+roomname+additional+"&sendframes&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stats_Monitor";
+		var iframesrc = "https://vdo.versus.cam/alpha/?salt=vdo.ninja&sendframes&scene&room="+roomname+additional+"&sendframes&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stats_Monitor";
 		// note: it's possible to set the width/height dyanmically via the IFRAME API also now. just call on video track load.
 		
-		getById("inviteLink").value = "https://vdo.versus.cam/alpha/?room="+roomname+additional+"&label&quality&maxbandwidth&view";
+		getById("inviteLink").value = "https://vdo.ninja/alpha/?room="+roomname+additional+"&label&quality&maxbandwidth&view";
 
 		
 		if (roomname!==false){
