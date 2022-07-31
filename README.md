@@ -2,4 +2,4 @@
 Go to http://versus.cam and try it out
 
 
-powered by, and compatible with, VDO.Ninja
+Made with love 💖 using the VDO.Ninja 🥷 IFrame API.
