@@ -766,7 +766,7 @@
 			}
 			canvas.dataset.uid = uuid;
 			container.appendChild(canvas);
-			toggleDisplay();
+			toggleDisplay(true, container);
 		}
 		
 		selfDestructElement(UUID, uuid);
@@ -909,9 +909,9 @@
 		});
 	}
 	
-	function toggleDisplay(UUID=true){
+	function toggleDisplay(UUID, container){
 		if (UUID===true){
-			var ele = document.querySelector('.selected[data-action-type="tab-section"]');
+			var ele = container.querySelector('.selected[data-action-type="tab-section"]');
 			if (ele.dataset.uid){
 				UUID = ele.dataset.uid;
 			} else {
@@ -919,14 +919,14 @@
 			}
 		}
 		selectedUUID = UUID;
-		document.getElementById("container_"+UUID).querySelectorAll('[data-action-type="tab-section"]').forEach(ele=>{
+		container.getElementById("container_"+UUID).querySelectorAll('[data-action-type="tab-section"]').forEach(ele=>{
 			if (selectedUUID && (selectedUUID == ele.dataset.uid)){
 				ele.classList.add("selected");
 			} else {
 				ele.classList.remove("selected");
 			}
 		});
-		document.getElementById("container_"+UUID).querySelectorAll('.graphSection > [data-uid]').forEach(ele=>{
+		container.getElementById("container_"+UUID).querySelectorAll('.graphSection > [data-uid]').forEach(ele=>{
 			if (selectedUUID && (selectedUUID == ele.dataset.uid)){
 				ele.classList.remove("unselected");
 			} else {
@@ -951,7 +951,7 @@
 		}
 		
 		if (!size){
-			toggleDisplay(null);
+			toggleDisplay(null, container);
 			container.querySelectorAll('[data-no-scenes]').forEach(ele=>{
 				ele.classList.remove("hidden"); 
 				if (ele.dataset.message){
@@ -978,15 +978,16 @@
 				tab.innerText = data[uuid].label || data[uuid].scene || uuid.substring(0, 8);
 				tab.classList.remove("hidden");
 				tab.id = "";
+				tab.container = container;
 				tab.onclick = function(evt){ 
-					toggleDisplay(this.dataset.uid);
+					toggleDisplay(this.dataset.uid, this.container);
 				}
 				
 				container.querySelector("#tabs").appendChild(tab);
 				
 				if (!selectedUUID){
 					selectedUUID = uuid;
-					toggleDisplay(uuid);
+					toggleDisplay(uuid, container);
 				}
 			}
 			plotData(data[uuid], UUID, uuid);
