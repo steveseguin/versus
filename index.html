@@ -919,14 +919,14 @@
 			}
 		}
 		selectedUUID = UUID;
-		container.getElementById("container_"+UUID).querySelectorAll('[data-action-type="tab-section"]').forEach(ele=>{
+		container.querySelectorAll('[data-action-type="tab-section"]').forEach(ele=>{
 			if (selectedUUID && (selectedUUID == ele.dataset.uid)){
 				ele.classList.add("selected");
 			} else {
 				ele.classList.remove("selected");
 			}
 		});
-		container.getElementById("container_"+UUID).querySelectorAll('.graphSection > [data-uid]').forEach(ele=>{
+		container.querySelectorAll('.graphSection > [data-uid]').forEach(ele=>{
 			if (selectedUUID && (selectedUUID == ele.dataset.uid)){
 				ele.classList.remove("unselected");
 			} else {
