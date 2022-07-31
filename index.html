@@ -970,7 +970,7 @@
 			if (!container2){
 				container2 = document.querySelector('[data-action-type="stats-graphs-details-container"]').cloneNode(true);
 				container2.dataset.uid = uuid;
-				document.querySelector('[data-action-type="stats-graphs-details"]').appendChild(container2);
+				container.querySelector('[data-action-type="stats-graphs-details"]').appendChild(container2);
 				container2.classList.remove("hidden");
 				
 				var tab = document.querySelector('#tabTemplate').cloneNode(true);
@@ -982,7 +982,7 @@
 					toggleDisplay(this.dataset.uid);
 				}
 				
-				document.querySelector("#tabs").appendChild(tab);
+				container.querySelector("#tabs").appendChild(tab);
 				
 				if (!selectedUUID){
 					selectedUUID = uuid;
