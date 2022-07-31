@@ -92,14 +92,6 @@
 		<div class="center-content">
 			<div class="title"><h1 class="main-heading">Invite, Manage, Monitor</h1><h2>Optimized for eSports video production</h2></div>
 			
-			<label for="roomname"><input name="roomname" id="roomname" type="text" placeholder="Room Name" /></label>
-			<br />
-			<label for="roompassword"><input name="roompassword" id="roompassword" type="text" placeholder="Room Password"/></label>
-			<font class="tooltip">
-				<button onclick="randomPassword();" class="randomPassword"></button><span class="tooltiptext">Generate a random password</span>
-			</font>
-			<br />
-			<button onclick="startRoom();">Continue</button>
 			<div id="lastSavedRoom" class="hidden">
 				<br /><br />
 				<label for="savedroomname">
@@ -108,6 +100,16 @@
 					<input name="savedroompassword" id="savedroompassword" disabled type="password" placeholder="Room Password"/></label>
 				<button onclick="startLastRoom();">Restore last room</button>
 			</div>
+			
+			<label for="roomname"><input name="roomname" id="roomname" type="text" placeholder="Room Name" /></label>
+			<br />
+			<label for="roompassword"><input name="roompassword" id="roompassword" type="text" placeholder="Room Password"/></label>
+			<font class="tooltip">
+				<button onclick="randomPassword();" class="randomPassword"></button><span class="tooltiptext">Generate a random password</span>
+			</font>
+			<br />
+			<button onclick="startRoom();">Continue</button>
+			
 			<br /><br />
 			<div class="footer">
 				<div>
