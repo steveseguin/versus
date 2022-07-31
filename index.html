@@ -912,26 +912,25 @@
 		});
 	}
 	
-	function toggleDisplay(UUID, container){
-		console.log(UUID,container);
-		if (UUID===true){
+	function toggleDisplay(uid, container){
+		console.log(uid,container);
+		if (uid===true){
 			var ele = container.querySelector('.selected[data-action-type="tab-section"]');
 			if (ele && ele.dataset.uid){
-				UUID = ele.dataset.uid;
+				uid = ele.dataset.uid;
 			} else {
-				UUID = null;
+				uid = null;
 			}
 		}
-		selectedUUID = UUID;
 		container.querySelectorAll('[data-action-type="tab-section"]').forEach(ele=>{
-			if (selectedUUID && (selectedUUID == ele.dataset.uid)){
+			if (uid && (uid == ele.dataset.uid)){
 				ele.classList.add("selected");
 			} else {
 				ele.classList.remove("selected");
 			}
 		});
 		container.querySelectorAll('.graphSection > [data-uid]').forEach(ele=>{
-			if (selectedUUID && (selectedUUID == ele.dataset.uid)){
+			if (uid && (uid == ele.dataset.uid)){
 				ele.classList.remove("unselected");
 			} else {
 				ele.classList.add("unselected");
@@ -990,11 +989,9 @@
 				
 				container.querySelector("#tabs").appendChild(tab);
 				
-				if (!selectedUUID){
-					selectedUUID = uuid;
-					console.log("993");
-					toggleDisplay(uuid, container);
-				}
+				console.log("993");
+				toggleDisplay(uuid, container);
+				
 			}
 			plotData(data[uuid], UUID, uuid);
 			
