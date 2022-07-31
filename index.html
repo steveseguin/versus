@@ -912,7 +912,7 @@
 	function toggleDisplay(UUID, container){
 		if (UUID===true){
 			var ele = container.querySelector('.selected[data-action-type="tab-section"]');
-			if (ele.dataset.uid){
+			if (ele && ele.dataset.uid){
 				UUID = ele.dataset.uid;
 			} else {
 				UUID = null;
