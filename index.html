@@ -552,10 +552,10 @@
 		}
 		// &viewonly&showall&bitrate=35
 		//var iframesrc = "./index.html?sendframes&graphs&lightmode&bitrate=300&viewheight=180&viewwidth=320&transparent&cleanoutput&label=Stats_Monitor&scenelinkcodec=h264&manual&nopush&showall&scenelinkbitrate=12000&room="+roomname+additional+"&b64css="+injectCSS;
-		var iframesrc = "./index.html?sendframes&scene&room="+roomname+additional+"&sendframes&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stats_Monitor";
+		var iframesrc = "https://vdo.versus.cam/alpha/?sendframes&scene&room="+roomname+additional+"&sendframes&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stats_Monitor";
 		// note: it's possible to set the width/height dyanmically via the IFRAME API also now. just call on video track load.
 		
-		getById("inviteLink").value = "https://"+window.location.host+pathname+"/?room="+roomname+additional+"&label&quality&maxbandwidth&view";
+		getById("inviteLink").value = "https://vdo.versus.cam/alpha/?room="+roomname+additional+"&label&quality&maxbandwidth&view";
 
 		
 		if (roomname!==false){
