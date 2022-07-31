@@ -768,7 +768,8 @@
 			}
 			canvas.dataset.uid = uuid;
 			container.appendChild(canvas);
-			toggleDisplay(true, container);
+			console.log("771");
+			toggleDisplay(true, container); 
 		}
 		
 		selfDestructElement(UUID, uuid);
@@ -912,6 +913,7 @@
 	}
 	
 	function toggleDisplay(UUID, container){
+		console.log(UUID,container);
 		if (UUID===true){
 			var ele = container.querySelector('.selected[data-action-type="tab-section"]');
 			if (ele && ele.dataset.uid){
@@ -953,6 +955,7 @@
 		}
 		
 		if (!size){
+			console.log("958");
 			toggleDisplay(null, container);
 			container.querySelectorAll('[data-no-scenes]').forEach(ele=>{
 				ele.classList.remove("hidden"); 
@@ -989,6 +992,7 @@
 				
 				if (!selectedUUID){
 					selectedUUID = uuid;
+					console.log("993");
 					toggleDisplay(uuid, container);
 				}
 			}
