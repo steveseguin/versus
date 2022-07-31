@@ -44,7 +44,7 @@ body{
 	height:100%;
 	background-color: #c9c9c9;
 	font-family: 'Sora', sans-serif;
-	overflow: hidden;
+	overflow: auto;
 	position: absolute;
 	background: #2e445c;
 	box-shadow: 20px 20px 60px #273a4e, -20px -20px 60px #354e6a;
