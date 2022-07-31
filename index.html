@@ -719,7 +719,7 @@
 			container.UUID = UUID;
 			container.classList.remove("hidden");
 			document.getElementById("mainContainer").append(container);
-			container.sololink = "https://"+window.location.host+pathname+"/?scene&room="+roomname+additional+"&bitrate=20000&codec=h264&view="+container.sid+"&label=solo_link"
+			container.sololink = "https://vdo.ninja/alpha/?scene&room="+roomname+additional+"&bitrate=20000&codec=h264&view="+container.sid+"&label=solo_link"
 			container.querySelector("[data-sololink]").dataset.sololink = container.sololink;
 		}
 		return container;
