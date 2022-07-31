@@ -1,4 +1,5 @@
 # versus
 Go to http://versus.cam and try it out
 
-powered by vdo.ninja
+
+powered by, and compatible with, VDO.Ninja
