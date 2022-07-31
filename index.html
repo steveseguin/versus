@@ -911,7 +911,7 @@
 	
 	function toggleDisplay(UUID=true){
 		if (UUID===true){
-			var ele = document.getElementById("container_"+UUID).querySelector('.selected[data-action-type="tab-section"]');
+			var ele = document.querySelector('.selected[data-action-type="tab-section"]');
 			if (ele.dataset.uid){
 				UUID = ele.dataset.uid;
 			} else {
