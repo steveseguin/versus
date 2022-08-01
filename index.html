@@ -1062,6 +1062,7 @@
 					
 					span.onclick = function(event){
 						if (!(streamInfo[this.dataset.UUID] && streamInfo[this.dataset.UUID].info && streamInfo[this.dataset.UUID].info.remote)){
+							alert("The remote guest link needs &remote added to their URL to have remote control access of bitrates.");
 							console.warn("remote control not enabled");
 							return;
 						}
@@ -1124,10 +1125,10 @@
 					span.style.cursor = "pointer";
 					span.onclick = function(event){
 						if (!(streamInfo[this.dataset.UUID] && streamInfo[this.dataset.UUID].info && streamInfo[this.dataset.UUID].info.remote)){
+							alert("The remote guest link needs &remote added to their URL to have remote control access of resolutions.");
 							console.warn("remote control not enabled");
 							return;
 						}
-						
 						var ele = document.querySelector("[data-action-type='stats-graphs-details-container'][data-uid='"+this.dataset.uid+"'] .resolution-dropdown");
 						if (ele){
 							ele.classList.toggle("hidden");
