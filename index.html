@@ -1066,7 +1066,7 @@
 							return;
 						}
 						
-						var ele = document.querySelector("[data-action-type='stats-graphs-details-container'][data-uid='a1eacb44f3b7495da44057579df6eb8e'] .bitrate-dropdown");
+						var ele = document.querySelector("[data-action-type='stats-graphs-details-container'][data-uid='"+this.dataset.uid+"'] .bitrate-dropdown");
 						if (ele){
 							ele.classList.toggle("hidden");
 						}
@@ -1128,7 +1128,7 @@
 							return;
 						}
 						
-						var ele = document.querySelector("[data-action-type='stats-graphs-details-container'][data-uid='a1eacb44f3b7495da44057579df6eb8e'] .resolution-dropdown");
+						var ele = document.querySelector("[data-action-type='stats-graphs-details-container'][data-uid='"+this.dataset.uid+"'] .resolution-dropdown");
 						if (ele){
 							ele.classList.toggle("hidden");
 						}
