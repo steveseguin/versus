@@ -99,6 +99,8 @@
 				<label for="savedroompassword" id="savedpasswordlabel"><br />
 					<input name="savedroompassword" id="savedroompassword" disabled type="password" placeholder="Room Password"/></label>
 				<button onclick="startLastRoom();">Restore last room</button>
+				<br>
+				<br>
 			</div>
 			
 			<label for="roomname"><input name="roomname" id="roomname" type="text" placeholder="Room Name" /></label>
@@ -133,13 +135,13 @@
 	<div id="messagePopup" class="popup-message"></div>
 	<div id="graphTemplate" class="container hidden fadein">
 		<span class="video" data-action-type="video-container">
+			<span class="videoLabel"></span>
 		</span>
 		<div class='right-side'>
 			<span class="streamTitle">
 				<button data-sololink="false" title="Copy the view link for this video to your clipboard" onclick="copyFunction(this.dataset.sololink, event);"><img src="data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M 15 3 C 13.742188 3 12.847656 3.890625 12.40625 5 L 5 5 L 5 28 L 13 28 L 13 30 L 27 30 L 27 14 L 25 14 L 25 5 L 17.59375 5 C 17.152344 3.890625 16.257813 3 15 3 Z M 15 5 C 15.554688 5 16 5.445313 16 6 L 16 7 L 19 7 L 19 9 L 11 9 L 11 7 L 14 7 L 14 6 C 14 5.445313 14.445313 5 15 5 Z M 7 7 L 9 7 L 9 11 L 21 11 L 21 7 L 23 7 L 23 14 L 13 14 L 13 26 L 7 26 Z M 15 16 L 25 16 L 25 28 L 15 28 Z'/%3E%3C/svg%3E" class='icon'> View Link</button>
 			</span>
 			<span id="tabs">
-				
 			</span>
 			<span class="graphSection" data-action-type="stats-graphs-bitrate" data-value="0">
 				<span class="hidden" data-message="true" data-no-scenes="true"></span>
@@ -148,9 +150,25 @@
 				<span class="hidden" data-no-scenes="true"></span>
 				<span class="stats-container unselected" data-action-type="stats-graphs-details-container">
 					<span class="stats-sub-container" data-scene-name="true">scene</span>
-					<span class="stats-sub-container" data-bitrate="true">bitrate (kbps)</span>
-					<span class="stats-sub-container" data-resolution="true">resolution</span>
+					<span class="stats-sub-container clickable" data-bitrate="true">bitrate (kbps)</span>
+					<div class="dropdown hidden bitrate-dropdown" title="Select a bitrate for this remote output">
+						<button data-bitrate-option="1000">1000-kbps</button>
+						<button data-bitrate-option="2000">2000-kbps</button>
+						<button data-bitrate-option="5000">5000-kbps</button>
+						<button data-bitrate-option="10000">10,000-kbps</button>
+						<button data-bitrate-option="20000">20,000-kbps</button>
+						<button data-bitrate-option="custom">custom</button>
+					</div>
+					<span class="stats-sub-container clickable" data-resolution="true">resolution</span>
+					<div class="dropdown hidden resolution-dropdown" title="Select a resolution for this remote output">
+						<button data-res-option="360">360p</button>
+						<button data-res-option="720">720p</button>
+						<button data-res-option="1080">1080p</button>
+						<button data-res-option="custom">custom</button>
+					</div>
 					<span class="stats-sub-container" style="display:none; word-break: break-all;" data-video-codec="true">video codec</span>
+					<div class="dropdown hidden bitrate-codec">
+					</div>
 				</span>
 			</span>
 		
@@ -445,6 +463,7 @@
 	function errorlog(e,a=null,b=null){
 		console.error(e);
 	}
+	var streamInfo = {};
 	var streamIDs = [];
 	var slotsNeeded = 1;
 	var lastLayout = false;
@@ -472,6 +491,22 @@
 		savedSession = {};
 	}
 	
+	
+	document.body.addEventListener("click",function(event){
+		if (event.target.classList.contains("clickable")){
+			return;
+		}
+		if (event.target.classList.contains("dropdown")){
+			return;
+		}
+		if (event.target.tagName == "BUTTON"){
+			return;
+		}
+		
+		document.querySelectorAll(".dropdown").forEach(ele=>{
+			ele.classList.add("hidden");
+		})
+	});
 	
 	var pathname = window.location.pathname.split('/');
 	pathname.pop();
@@ -552,12 +587,10 @@
 		if (!roomname){
 			roomname = generateString(10);
 		}
-		// &viewonly&showall&bitrate=35
-		//var iframesrc = "./index.html?sendframes&graphs&lightmode&bitrate=300&viewheight=180&viewwidth=320&transparent&cleanoutput&label=Stats_Monitor&scenelinkcodec=h264&manual&nopush&showall&scenelinkbitrate=12000&room="+roomname+additional+"&b64css="+injectCSS;
-		var iframesrc = "https://vdo.versus.cam/alpha/?salt=vdo.ninja&sendframes&scene&room="+roomname+additional+"&sendframes&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stats_Monitor";
+		var iframesrc = "https://vdo.versus.cam/alpha/?salt=vdo.ninja&sendframes&scene&room="+roomname+additional+"&sendframes&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Versus_Preview";
 		// note: it's possible to set the width/height dyanmically via the IFRAME API also now. just call on video track load.
 		
-		getById("inviteLink").value = "https://vdo.ninja/alpha/?room="+roomname+additional+"&label&quality&maxbandwidth&view";
+		getById("inviteLink").value = "https://vdo.ninja/alpha/?room="+roomname+additional+"&remote&label&quality&maxbandwidth&view";
 
 		
 		if (roomname!==false){
@@ -633,13 +666,24 @@
 				return;
 			} // end of video/audio capture
 			
-			if ("action" in e.data){
-				if (e.data.action === "view-connection"){
+			if (e.data.action){
+				if (e.data.action === "remote-label-changed"){
+					if (e.data.UUID && ("value" in e.data)){
+						if (!streamInfo[e.data.UUID]){
+							streamInfo[e.data.UUID] = {};
+						}
+						streamInfo[e.data.UUID].label = e.data.value;
+						updateLabels();
+					}
+				} else if (e.data.action === "view-connection"){
 					if (e.data.value){ // connected
 						if (e.data.streamID){
-							updateStreams();
-							if (streamIDs.includes(e.data.streamID)){return;}
+							if (streamIDs.includes(e.data.streamID)){
+								updateStreams();
+								return;
+							}
 							streamIDs.push(e.data.streamID);
+							updateStreams();
 						}
 					} else { // disconnected
 						try {
@@ -704,11 +748,12 @@
 			} else if ("messageList" in e.data){
 				messageList = e.data.messageList;
 				updateMessages();
-			}
-			if ("remoteStats" in e.data) {
+			} else if ("remoteStats" in e.data) {
 				remoteStats(e.data.remoteStats, e.data.UUID, e.data.streamID)
-			}
-				
+			} else if ("streamInfo" in e.data){
+				streamInfo = e.data.streamInfo;
+				updateLabels();
+			} 
 		});
 	}
 	
@@ -721,7 +766,7 @@
 			container.UUID = UUID;
 			container.classList.remove("hidden");
 			document.getElementById("mainContainer").append(container);
-			container.sololink = "https://vdo.ninja/alpha/?scene&room="+roomname+additional+"&bitrate=20000&codec=h264&view="+container.sid+"&label=solo_link"
+			container.sololink = "https://vdo.ninja/alpha/?scene&room="+roomname+additional+"&bitrate=20000&codec=h264&view="+container.sid+"&label=Solo_View"
 			container.querySelector("[data-sololink]").dataset.sololink = container.sololink;
 		}
 		return container;
@@ -730,8 +775,20 @@
 	function updateStreams(){
 		document.getElementById("streamsConnected").innerHTML = streamIDs.length;
 		if (iframe){
-			iframe.contentWindow.postMessage({ requestStatsContinuous: true }, "*"); 
+			iframe.contentWindow.postMessage({ requestStatsContinuous: true, getStreamInfo: true  }, "*"); 
 		}
+	}
+	
+	function updateLabels(){
+		document.querySelectorAll(".videolabel").forEach(ele=>{
+			if (ele.dataset.UUID && streamInfo[ele.dataset.UUID]){
+				var label = streamInfo[ele.dataset.UUID].label || streamInfo[ele.dataset.UUID].streamID || "";
+				if (label.length>35){
+					label = label.substring(0, 35)+"...";
+				}
+				ele.innerText = label;
+			}
+		});
 	}
 	
 	function getColor(value) {
@@ -740,7 +797,6 @@
 	}
 
 	function plotData(info, UUID, uuid) { // type = "bitrate" or "nacks"
-		log("plot data");
 
 		var container = getById("container_" + UUID).querySelector('[data-action-type="stats-graphs-bitrate"]');
 		
@@ -846,7 +902,6 @@
 				context.fillStyle = "#0555";
 				context.fillRect(0, y, width, 1);
 			}
-			log("finished plotting a new y-axis");
 			return;
 		}
 		//if (info.available_outgoing_bitrate_kbps){
@@ -889,8 +944,6 @@
 		var imageData = context.getImageData(w, 0, x, height);
 		context.putImageData(imageData, 0, 0);
 		context.clearRect(x, 0, w, height);
-		
-		log("finished plotting");
 	}
 
 	function selfDestructElement(UUID, uid){
@@ -966,6 +1019,13 @@
 			ele.classList.add("hidden");
 		});
 		
+		container.querySelectorAll(".videoLabel").forEach(ele=>{
+			ele.dataset.UUID = UUID;
+			ele.dataset.streamID = streamID;
+		});
+		
+		updateLabels();
+		
 		for (var uuid in data){
 			var container2 = container.querySelector('[data-action-type="stats-graphs-details-container"][data-uid="'+uuid+'"]');
 			if (!container2){
@@ -998,19 +1058,44 @@
 					span.innerHTML = "video bitrate:<br />"+numberWithCommas(parseInt(data[uuid].video_bitrate_kbps)) + " (kbps)";
 					span.dataset.uid = uuid;
 					span.dataset.UUID = UUID;
-					span.onclick = function(){
-						var bitrate = prompt("What bitrate do you want to try instead (kbps)?");
-						if (bitrate===null){return;}
+					span.style.cursor = "pointer";
+					
+					span.onclick = function(event){
+						if (!(streamInfo[this.dataset.UUID] && streamInfo[this.dataset.UUID].info && streamInfo[this.dataset.UUID].info.remote)){
+							console.warn("remote control not enabled");
+							return;
+						}
 						
+						var ele = document.querySelector("[data-action-type='stats-graphs-details-container'][data-uid='a1eacb44f3b7495da44057579df6eb8e'] .bitrate-dropdown");
+						if (ele){
+							ele.classList.toggle("hidden");
+						}
+						event.preventDefault;
+						return false;
+					};
+				}
+				
+				container2.querySelectorAll('[data-bitrate-option]').forEach(ele=>{
+					ele.dataset.uid = uuid;
+					ele.dataset.UUID = UUID;
+					ele.onclick = function(){
+						//var bitrate = prompt("What bitrate do you want to try instead (kbps)?");
+						//if (bitrate===null){return;}
 						var msg = {};
-						msg.targetBitrate = parseInt(bitrate);
-						msg.requestAs = span.dataset.uid
-						msg.UUID = UUID;
+						if (this.dataset.bitrateOption==="custom"){
+							msg.targetBitrate = parseInt(this.dataset.bitrateOption);  // targetWidth
+							var bitrate = prompt("What bitrate do you want to try instead? (in kbps)");
+							if (bitrate===null){return;}
+							msg.targetBitrate =  parseInt(bitrate);
+						} else {
+							msg.targetBitrate = parseInt(this.dataset.bitrateOption);  // targetWidth
+						}
+						msg.requestAs = this.dataset.uid
+						msg.UUID = this.dataset.UUID;
 			
 						iframe.contentWindow.postMessage(msg, "*");
-						
 					}
-				}
+				});
 			}
 			var span = container2.querySelector('[data-scene-name]');
 			if (span && ("label" in data[uuid]) && data[uuid].label){
@@ -1034,7 +1119,45 @@
 				if (span){
 					span.classList.remove("hidden");
 					span.innerHTML = "res: "+data[uuid].resolution.replace(" @ ","<br />fps: ");
+					span.dataset.uid = uuid;
+					span.dataset.UUID = UUID;
+					span.style.cursor = "pointer";
+					span.onclick = function(event){
+						if (!(streamInfo[this.dataset.UUID] && streamInfo[this.dataset.UUID].info && streamInfo[this.dataset.UUID].info.remote)){
+							console.warn("remote control not enabled");
+							return;
+						}
+						
+						var ele = document.querySelector("[data-action-type='stats-graphs-details-container'][data-uid='a1eacb44f3b7495da44057579df6eb8e'] .resolution-dropdown");
+						if (ele){
+							ele.classList.toggle("hidden");
+						}
+						event.preventDefault;
+						return false;
+					};
 				}
+				
+				container2.querySelectorAll('[data-res-option]').forEach(ele=>{
+					ele.dataset.uid = uuid;
+					ele.dataset.UUID = UUID;
+					ele.onclick = function(){
+						//var bitrate = prompt("What bitrate do you want to try instead (kbps)?");
+						//if (bitrate===null){return;}
+						var msg = {};
+						
+						if (this.dataset.resOption==="custom"){
+							var res = prompt("What resolution do you want to try instead? (width only in pixels)");
+							if (res===null){return;}
+							msg.targetHeight = parseInt(res);
+						} else {
+							msg.targetHeight = parseInt(this.dataset.resOption);  // targetWidth
+						}
+						msg.requestAs = this.dataset.uid
+						msg.UUID = this.dataset.UUID;
+			
+						iframe.contentWindow.postMessage(msg, "*");
+					}
+				});
 			}
 			
 			if ("video_encoder" in data[uuid]){
@@ -1222,7 +1345,56 @@
 	  return "Seconds ago";
 	}
 
-
+	function replaceURLs(message) {
+		if(!message) return;
+		var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+		return message.replace(urlRegex, function (url) {
+			url = url.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/["']/g, ""); // try to sanitize things, just in case.
+			
+			var punc = "";
+			while (url[url.length-1] === "."){
+				url = url.slice(0,-1);
+				punc += ".";
+			}
+			while (url[url.length-1] === ";"){
+				url = url.slice(0,-1);
+				punc += ";";
+			}
+			while (url[url.length-1] === ","){
+				url = url.slice(0,-1);
+				punc += ",";
+			}
+			while (url[url.length-1] === "!"){
+				url = url.slice(0,-1);
+				punc += "!";
+			}
+			while (url[url.length-1] === ":"){
+				url = url.slice(0,-1);
+				punc += ":";
+			}
+			while (url[url.length-1] === "*"){
+				url = url.slice(0,-1);
+				punc += "*";
+			}
+			while (url[url.length-1] === ")"){
+				url = url.slice(0,-1);
+				punc += ")";
+			}
+			while (url[url.length-1] === "?"){
+				url = url.slice(0,-1);
+				punc += "?";
+			}
+			
+			var hyperlink = url;
+			if (!hyperlink.match('^https?:\/\/')) {
+				hyperlink = 'http://' + hyperlink;
+			}
+			if (url.length>35){
+				url = url.substring(0, 35)+"...";
+			}
+			return '<a href="' + hyperlink + '" title="Click to open the link in a new tab" target="_blank" rel="noopener noreferrer">' + url + '</a>'+punc;
+		});
+	}
 
 	function updateMessages(message = false){
 		if (message){
@@ -1233,6 +1405,7 @@
 			if (message.label){
 				label = message.label;
 			} 
+			message.msg = replaceURLs(message.msg);
 			
 			if (message.type == "sent"){
 				msg.innerHTML = "<span class='chat_message chat_sent'>"+message.msg + "  </span><i><small> <small>- "+time+"</small></small></i><span style='display:none'>"+label+"</span>";
@@ -1262,20 +1435,22 @@
 					label = messageList[i].label;
 				} 
 				
+				var message = replaceURLs(messageList[i].msg);
+				
 				if (messageList[i].type == "sent"){
-					msg.innerHTML = "<span class='chat_message chat_sent'>"+messageList[i].msg + "  </span><i><small> <small>- "+time+"</small></small></i><span style='display:none'>"+label+"</span>";
+					msg.innerHTML = "<span class='chat_message chat_sent'>"+message + "  </span><i><small> <small>- "+time+"</small></small></i><span style='display:none'>"+label+"</span>";
 					msg.classList.add("outMessage");
 				} else if (messageList[i].type == "recv"){
-					msg.innerHTML = label+"<span class='chat_message chat_recv'>"+messageList[i].msg + " </span><i><small> <small>- "+time+"</small></small></i>";
+					msg.innerHTML = label+"<span class='chat_message chat_recv'>"+message + " </span><i><small> <small>- "+time+"</small></small></i>";
 					msg.classList.add("inMessage");
 				} else if (messageList[i].type == "action"){
-					msg.innerHTML = label+"<span class='chat_message chat_action'>"+messageList[i].msg + " </span><i><small> <small>- "+time+"</small></small></i>";
+					msg.innerHTML = label+"<span class='chat_message chat_action'>"+message + " </span><i><small> <small>- "+time+"</small></small></i>";
 					msg.classList.add("actionMessage");
 				} else if (messageList[i].type == "alert"){
-					msg.innerHTML = "<span class='chat_message chat_alert'>"+messageList[i].msg + " </span><i><small> <small>- "+time+"</small></small></i>";
+					msg.innerHTML = "<span class='chat_message chat_alert'>"+message + " </span><i><small> <small>- "+time+"</small></small></i>";
 					msg.classList.add("inMessage");
 				} else {
-					msg.innerHTML = "<span class='chat_message chat_other'>"+messageList[i].msg + "  </span><i><small> <small>- "+time+"</small></small></i>";
+					msg.innerHTML = "<span class='chat_message chat_other'>"+message + "  </span><i><small> <small>- "+time+"</small></small></i>";
 					msg.classList.add("inMessage");
 				}
 				

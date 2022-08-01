@@ -24,6 +24,34 @@
 .unselected{
 	display:none!important;
 }
+
+.dropdown {
+	position: absolute;
+    top: 45px;
+    border-radius: 0 0 10px 10px;
+    display: block;
+    box-shadow: 0px 8px 16px 0px rgb(0 0 0 / 40%);
+    z-index: 2;
+    transition: all .2s ease-in-out;
+    align-items: center;
+    padding: 20px;
+    background: #2e445c;
+}
+.dropdown.resolution-dropdown {
+	left: 272px
+}
+
+.dropdown.bitrate-dropdown{
+	left: 134px;
+}
+
+.clickable.stats-sub-container:hover {
+    box-shadow: 1px 1px 1px #fff, -1px -1px 1px #fff;
+}
+
+.dropdown button{
+	display:block;
+}
 #tabs{
 	margin: 0;
     padding: 0;
@@ -36,7 +64,19 @@
 #tabs>.tab:only-child {
 	display:none;
 }
-
+.video {
+	min-width: 342px;
+    min-height: 60px;
+}
+.videoLabel {
+	float: right;
+    position: absolute;
+    z-index: 10;
+    color: white;
+    margin: 6px 14px;
+	font-size: 14px;
+    text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 5px black;
+}
 body{
 	padding:0;
 	margin:0;
@@ -427,6 +467,19 @@ button{
 	cursor:pointer;
 	background: linear-gradient(135deg, rgba(238,238,238,1) 60%,rgb(225, 225, 225, 1) 80%,rgb(210, 209, 209, 1) 100%);
 }
+
+
+
+button:hover{
+	background-color: #DDDD;
+	background: #DDDD;
+}
+button:active{
+	background-color: #BBBD;
+	background: #BBBD;
+}
+
+
 video{
 	max-width: 320px;
 	min-height: 180px;
