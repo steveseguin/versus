@@ -625,9 +625,7 @@
 			if (e.source != iframe.contentWindow){return} // reject messages send from other iframes
 			//console.log(e.data);
 			if (e.data.frame){  // add `&sendframes` to the view link to trigger this event; it lets you capture video/audio from the parent window
-				console.log(e.data);
 				if (!media.tracks[e.data.trackID]){
-					log(e.data);
 					media.tracks[e.data.trackID] = {};
 					media.tracks[e.data.trackID].generator = new MediaStreamTrackGenerator({kind:e.data.kind});
 					media.tracks[e.data.trackID].stream = new MediaStream([media.tracks[e.data.trackID].generator]);
@@ -718,8 +716,8 @@
 						} catch(e){errorlog(e);}
 					}
 				} else if (e.data.action == "video-element-created"){
+					updateStreams(false);
 					var container = getContainer(e.data.UUID, e.data.streamID);
-						
 					getById("container_"+e.data.UUID).classList.remove("greyout");
 					var video = container.querySelector("#video_"+e.data.streamID);
 					
@@ -763,16 +761,20 @@
 			container.UUID = UUID;
 			container.classList.remove("hidden");
 			document.getElementById("mainContainer").append(container);
-			container.sololink = "https://vdo.ninja/alpha/?scene&room="+roomname+additional+"&bitrate=20000&codec=h264&view="+container.sid+"&label=Solo_View"
+			container.sololink = "https://vdo.ninja/alpha/?scene&room="+roomname+additional+"&bitrate=20000&codec=h264&proaudio&ab=80&vbr&view="+container.sid+"&label=Solo_View"
 			container.querySelector("[data-sololink]").dataset.sololink = container.sololink;
 		}
 		return container;
 	}
 	
-	function updateStreams(){
+	function updateStreams(full=true){
 		document.getElementById("streamsConnected").innerHTML = streamIDs.length;
 		if (iframe){
-			iframe.contentWindow.postMessage({ requestStatsContinuous: true, getStreamInfo: true  }, "*"); 
+			if (full){
+				iframe.contentWindow.postMessage({ requestStatsContinuous: true, getStreamInfo: true  }, "*"); 
+			} else {
+				iframe.contentWindow.postMessage({ getStreamInfo: true  }, "*"); 
+			}
 		}
 	}
 	
