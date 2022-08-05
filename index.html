@@ -573,7 +573,7 @@
 		}
 	}
 	
-	function loadIframe(){ 
+	function loadIframe(){
 
 		roomname = sanitizeRoomName(roomname);
 	
@@ -636,6 +636,7 @@
 					if (!media.streams[e.data.streamID]){
 						media.streams[e.data.streamID] = document.createElement("video");
 						media.streams[e.data.streamID].id = "video_"+e.data.streamID;
+						media.streams[e.data.streamID].muted = true;
 						media.streams[e.data.streamID].autoplay = true;
 						media.streams[e.data.streamID].controls = true;
 						media.streams[e.data.streamID].srcObject = media.tracks[e.data.trackID].stream;
@@ -708,6 +709,7 @@
 							if (!media.streams[e.data.streamID]){
 								media.streams[e.data.streamID] = document.createElement("video");
 								media.streams[e.data.streamID].id = "video_"+e.data.streamID;
+								media.streams[e.data.streamID].muted = true;
 								media.streams[e.data.streamID].autoplay = true;
 								media.streams[e.data.streamID].srcObject = new MediaStream();
 								media.streams[e.data.streamID].controls = true;
@@ -726,6 +728,7 @@
 							if (!media.streams[e.data.streamID]){
 								media.streams[e.data.streamID] = document.createElement("video");
 								media.streams[e.data.streamID].id = "video_"+e.data.streamID;
+								media.streams[e.data.streamID].muted = true;
 								media.streams[e.data.streamID].autoplay = true;
 								media.streams[e.data.streamID].srcObject = new MediaStream();
 								media.streams[e.data.streamID].controls = true;
@@ -761,6 +764,12 @@
 			container.UUID = UUID;
 			container.classList.remove("hidden");
 			document.getElementById("mainContainer").append(container);
+			
+			container.querySelectorAll(".videoLabel").forEach(ele=>{
+				ele.dataset.UUID = UUID;
+				ele.dataset.streamID = streamID;
+			});
+			
 			container.sololink = "https://vdo.ninja/alpha/?scene&room="+roomname+additional+"&bitrate=20000&codec=h264&proaudio&ab=80&vbr&view="+container.sid+"&label=Solo_View"
 			container.querySelector("[data-sololink]").dataset.sololink = container.sololink;
 		}
@@ -1016,11 +1025,6 @@
 		
 		container.querySelectorAll('[data-no-scenes]').forEach(ele=>{
 			ele.classList.add("hidden");
-		});
-		
-		container.querySelectorAll(".videoLabel").forEach(ele=>{
-			ele.dataset.UUID = UUID;
-			ele.dataset.streamID = streamID;
 		});
 		
 		updateLabels();
