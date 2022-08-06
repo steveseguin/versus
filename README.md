@@ -2,7 +2,7 @@
 
 Invite, Manage, Monitor
 
-Optimized for eSports video production
+Optimized for Esports video production
 
 
 Go to http://versus.cam and try it out
