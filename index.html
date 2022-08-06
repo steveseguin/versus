@@ -638,7 +638,6 @@
 						media.streams[e.data.streamID].id = "video_"+e.data.streamID;
 						media.streams[e.data.streamID].muted = true;
 						media.streams[e.data.streamID].autoplay = true;
-						media.streams[e.data.streamID].controls = true;
 						media.streams[e.data.streamID].srcObject = media.tracks[e.data.trackID].stream;
 						iframeContainer.appendChild(media.streams[e.data.streamID]);
 					
@@ -656,6 +655,13 @@
 							media.streams[e.data.streamID].srcObject.addTrack(trk);
 						});
 					}
+					
+					setTimeout(function(eee){
+						eee.muted = false;
+						eee.muted = true;
+						eee.controls = true;
+					},500, media.streams[e.data.streamID])
+					
 				} else {
 					media.tracks[e.data.trackID].frameWriter.write(e.data.frame);
 				}
@@ -712,7 +718,11 @@
 								media.streams[e.data.streamID].muted = true;
 								media.streams[e.data.streamID].autoplay = true;
 								media.streams[e.data.streamID].srcObject = new MediaStream();
-								media.streams[e.data.streamID].controls = true;
+								setTimeout(function(eee){
+									eee.muted = false;
+									eee.muted = true;
+									eee.controls = true;
+								},500, media.streams[e.data.streamID])
 							}
 							container.querySelector('[data-action-type="video-container"]').appendChild(media.streams[e.data.streamID]);
 						} catch(e){errorlog(e);}
@@ -731,7 +741,11 @@
 								media.streams[e.data.streamID].muted = true;
 								media.streams[e.data.streamID].autoplay = true;
 								media.streams[e.data.streamID].srcObject = new MediaStream();
-								media.streams[e.data.streamID].controls = true;
+								setTimeout(function(eee){
+									eee.muted = false;
+									eee.muted = true;
+									eee.controls = true;
+								},500, media.streams[e.data.streamID])
 							}
 							container.querySelector('[data-action-type="video-container"]').appendChild(media.streams[e.data.streamID]);
 						} catch(e){errorlog(e);}
