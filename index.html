@@ -584,7 +584,7 @@
 		if (!roomname){
 			roomname = generateString(10);
 		}
-		var iframesrc = "https://vdo.versus.cam/alpha/?salt=vdo.ninja&sendframes&scene&room="+roomname+additional+"&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stream_Monitor";
+		var iframesrc = "https://vdo.versus.cam/alpha/?salt=vdo.ninja&speakermuted&sendframes&scene&room="+roomname+additional+"&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stream_Monitor";
 		// note: it's possible to set the width/height dyanmically via the IFRAME API also now. just call on video track load.
 		
 		getById("inviteLink").value = "https://vdo.ninja/alpha/?room="+roomname+additional+"&remote&label&quality&maxbandwidth&view";
@@ -638,6 +638,7 @@
 						media.streams[e.data.streamID].id = "video_"+e.data.streamID;
 						media.streams[e.data.streamID].muted = true;
 						media.streams[e.data.streamID].autoplay = true;
+						media.streams[e.data.streamID].controls = true;
 						media.streams[e.data.streamID].srcObject = media.tracks[e.data.trackID].stream;
 						iframeContainer.appendChild(media.streams[e.data.streamID]);
 					
@@ -655,13 +656,6 @@
 							media.streams[e.data.streamID].srcObject.addTrack(trk);
 						});
 					}
-					
-					setTimeout(function(eee){
-						eee.muted = false;
-						eee.muted = true;
-						eee.controls = true;
-					},500, media.streams[e.data.streamID])
-					
 				} else {
 					media.tracks[e.data.trackID].frameWriter.write(e.data.frame);
 				}
@@ -718,11 +712,7 @@
 								media.streams[e.data.streamID].muted = true;
 								media.streams[e.data.streamID].autoplay = true;
 								media.streams[e.data.streamID].srcObject = new MediaStream();
-								setTimeout(function(eee){
-									eee.muted = false;
-									eee.muted = true;
-									eee.controls = true;
-								},500, media.streams[e.data.streamID])
+								media.streams[e.data.streamID].controls = true;
 							}
 							container.querySelector('[data-action-type="video-container"]').appendChild(media.streams[e.data.streamID]);
 						} catch(e){errorlog(e);}
@@ -741,11 +731,7 @@
 								media.streams[e.data.streamID].muted = true;
 								media.streams[e.data.streamID].autoplay = true;
 								media.streams[e.data.streamID].srcObject = new MediaStream();
-								setTimeout(function(eee){
-									eee.muted = false;
-									eee.muted = true;
-									eee.controls = true;
-								},500, media.streams[e.data.streamID])
+								media.streams[e.data.streamID].controls = true;
 							}
 							container.querySelector('[data-action-type="video-container"]').appendChild(media.streams[e.data.streamID]);
 						} catch(e){errorlog(e);}
