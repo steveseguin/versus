@@ -108,6 +108,8 @@
 			</font>
 			<br />
 			<button onclick="startRoom();">Continue</button>
+			<br /><br />
+			<b>⚠ Update Notice</b>: If you created a room with a password prior to October 6th, either issue new invite links and use new view links, or simply join the room without a password.
 			
 			<br /><br />
 			<div class="footer">
@@ -271,6 +273,27 @@
 		}
 	}
 	
+	var generateHash = function (str, length=false){
+		var buffer = new TextEncoder("utf-8").encode(str);
+		return crypto.subtle.digest("SHA-256", buffer).then(
+			function (hash) {
+				hash = new Uint8Array(hash);
+				if (length){
+					hash = hash.slice(0, parseInt(parseInt(length)/2));
+				}
+				hash = toHexString(hash);
+				return hash;
+			}
+		);
+	};
+	
+	function toHexString(byteArray){
+		return Array.prototype.map.call(byteArray, function(byte){
+			return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+		}).join('');
+	}
+	
+	
 	function popupMessage(e, message = "Copied to Clipboard") { // right click menu
 
 		var posx = 0;
@@ -370,9 +393,14 @@
 	}
 	
 	var additional = "";
+	var hash = "";
 	if (password){
+		password = password.trim();
+		password = encodeURIComponent(password);
 		additional = "&password="+password;
 	}
+	
+	
 	
 	var iframe = null;
 	
@@ -390,9 +418,9 @@
 		if ("roomname" in savedLastRoom && savedLastRoom.roomname!==false){
 			document.getElementById("savedroomname").value = savedLastRoom.roomname;
 			document.getElementById("lastSavedRoom").classList.remove("hidden");
-			if ("password" in savedLastRoom && savedLastRoom.password!==false){
+			if ("roompassword" in savedLastRoom && savedLastRoom.roompassword!==false){
 				document.getElementById("savedpasswordlabel").classList.remove("hidden");
-				document.getElementById("savedroompassword").value = savedLastRoom.password;
+				document.getElementById("savedroompassword").value = savedLastRoom.roompassword;
 			} else {
 				document.getElementById("savedpasswordlabel").classList.add("hidden");
 			}
@@ -424,6 +452,8 @@
 		var pid = document.getElementById("roompassword").value.trim();
 		if (pid){
 			password = pid;
+			password = password.trim();
+			password = encodeURIComponent(password);
 		}
 	
 		var rid = document.getElementById("roomname").value.trim();
@@ -573,7 +603,7 @@
 		}
 	}
 	
-	function loadIframe(){
+	async function loadIframe(){
 
 		roomname = sanitizeRoomName(roomname);
 	
@@ -584,14 +614,29 @@
 		if (!roomname){
 			roomname = generateString(10);
 		}
-		var iframesrc = "https://vdo.versus.cam/alpha/?salt=vdo.ninja&speakermuted&sendframes&scene&room="+roomname+additional+"&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stream_Monitor";
+		
+		additional = "";
+		if (password){
+			additional = "&password="+password;
+			
+			hash = await new Promise((resolve, reject) => {
+				generateHash(password + "vdo.ninja", 4).then(function(hashResult) { 
+					resolve(hashResult);
+				});
+			});
+			
+			hash = "&hash="+hash;
+		}
+		
+		
+		var iframesrc = "https://vdo.versus.cam/best/?salt=vdo.ninja&speakermuted&sendframes&scene&room="+roomname+additional+"&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stream_Monitor";
 		// note: it's possible to set the width/height dyanmically via the IFRAME API also now. just call on video track load.
 		
-		getById("inviteLink").value = "https://vdo.ninja/alpha/?room="+roomname+additional+"&remote&label&quality&maxbandwidth&view";
+		getById("inviteLink").value = "https://vdo.ninja/beta/?room="+roomname+hash+"&remote&label&quality&maxbandwidth&view";
 
 		
 		if (roomname!==false){
-			setStorage("savedRoom", {roomname:roomname,password:password,viewlist:viewList}, 9999);
+			setStorage("savedRoom", {roomname:roomname,roompassword:password,viewlist:viewList}, 9999);
 		}
 		
 		document.title = "Stats for "+roomname;
@@ -770,7 +815,7 @@
 				ele.dataset.streamID = streamID;
 			});
 			
-			container.sololink = "https://vdo.ninja/alpha/?scene&room="+roomname+additional+"&bitrate=20000&codec=h264&proaudio&ab=80&vbr&view="+container.sid+"&label=Solo_View"
+			container.sololink = "https://vdo.ninja/beta/?solo&room="+roomname+additional+"&bitrate=20000&codec=h264&proaudio&ab=80&vbr&view="+container.sid+"&label=Solo_View"
 			container.querySelector("[data-sololink]").dataset.sololink = container.sololink;
 		}
 		return container;
@@ -1213,13 +1258,22 @@
 		return item.value;
 	}
 	
-	function showInviteOptions(){
+	async function showInviteOptions(){
 		document.getElementById("modal").style.display = "block";
 		document.getElementById("modal-content").innerHTML = document.getElementById("inviteOptions").innerHTML;
 		
-		var additional = "";
+		additional = "";
 		if (password){
 			additional = "&password="+password;
+			
+			
+			hash = await new Promise((resolve, reject) => {
+				generateHash(password + "vdo.ninja", 4).then(function(hashResult) { // million to one error. 
+					resolve(hashResult);
+				});
+			});
+			
+			hash = "&hash="+hash;
 		}
 		
 		document.querySelectorAll(".roomname").forEach(ele=>{
@@ -1228,9 +1282,9 @@
 		
 		document.querySelectorAll(".inviteLink").forEach(ele=>{
 			if (ele.tagName == "A"){
-				ele.href = "./index.html?room="+roomname+"&broadcast"+additional;
+				ele.href = "./?room="+roomname+"&broadcast"+hash;
 			} else if (ele.tagName == "I"){
-				ele.innerHTML = "URL + ?room="+roomname+"&broadcast"+additional;
+				ele.innerHTML = "URL + ?room="+roomname+"&broadcast"+hash;
 			}
 		});
 	}
@@ -1263,7 +1317,7 @@
 		
 		if (streamID && !(viewList.includes(streamID))){
 			viewList.push(streamID);
-			setStorage("savedRoom", {roomname:roomname,password:password,viewlist:viewList}, 9999);
+			setStorage("savedRoom", {roomname:roomname,roompassword:password,viewlist:viewList}, 9999);
 		}
 		
 		if (iframe && streamID && !(streamID in streamIDs)){ // don't request what we already have requested.
