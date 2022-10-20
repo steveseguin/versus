@@ -65,7 +65,7 @@
 			<div id='manualStream' class="hidden">
 				<h2>Add a stream manually</h2>
 				<h4>Your room password must match the password of the stream being requested</h4>
-				<label>Enter the stream ID:</label><br /><input type="text" data-id="manualStreamID" /><button onclick="requestStreamManually();" />Add stream</button><br /><br />
+				<label>Enter the stream ID:</label><br /><input type="text"  autocapitalize="off" data-id="manualStreamID" /><button onclick="requestStreamManually();" />Add stream</button><br /><br />
 				<button onclick="modal.style.display = 'none';">Close</button>
 			</div>
 			
@@ -92,17 +92,17 @@
 			<div id="lastSavedRoom" class="hidden">
 				<br /><br />
 				<label for="savedroomname">
-					<input name="savedroomname" id="savedroomname" type="text" disabled placeholder="Room Name" /></label>
+					<input name="savedroomname"  autocapitalize="off" id="savedroomname" type="text" disabled placeholder="Room Name" /></label>
 				<label for="savedroompassword" id="savedpasswordlabel"><br />
-					<input name="savedroompassword" id="savedroompassword" disabled type="password" placeholder="Room Password"/></label>
+					<input name="savedroompassword"  autocapitalize="off" id="savedroompassword" disabled type="password" placeholder="Room Password"/></label>
 				<button onclick="startLastRoom();">Restore last room</button>
 				<br>
 				<br>
 			</div>
 			
-			<label for="roomname"><input name="roomname" id="roomname" type="text" placeholder="Room Name" /></label>
+			<label for="roomname"><input  autocapitalize="off" name="roomname" id="roomname" type="text" placeholder="Room Name" /></label>
 			<br />
-			<label for="roompassword"><input name="roompassword" id="roompassword" type="text" placeholder="Room Password"/></label>
+			<label for="roompassword"><input name="roompassword"  autocapitalize="off" id="roompassword" type="text" placeholder="Room Password"/></label>
 			<font class="tooltip">
 				<button onclick="randomPassword();" class="randomPassword"></button><span class="tooltiptext">Generate a random password</span>
 			</font>
