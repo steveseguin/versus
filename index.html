@@ -629,10 +629,10 @@
 		}
 		
 		
-		var iframesrc = "https://vdo.versus.cam/beta/?salt=vdo.ninja&speakermuted&sendframes&scene&room="+roomname+additional+"&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stream_Monitor";
+		var iframesrc = "https://vdo.versus.cam/?salt=vdo.ninja&speakermuted&sendframes&scene&room="+roomname+additional+"&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stream_Monitor";
 		// note: it's possible to set the width/height dyanmically via the IFRAME API also now. just call on video track load.
 		
-		getById("inviteLink").value = "https://vdo.ninja/beta/?room="+roomname+hash+"&remote&label&quality&maxbandwidth&view";
+		getById("inviteLink").value = "https://vdo.ninja/?room="+roomname+hash+"&remote&label&quality&maxbandwidth&view";
 
 		
 		if (roomname!==false){
@@ -815,7 +815,7 @@
 				ele.dataset.streamID = streamID;
 			});
 			
-			container.sololink = "https://vdo.ninja/beta/?solo&room="+roomname+additional+"&bitrate=20000&codec=h264&proaudio&ab=80&vbr&view="+container.sid+"&label=Solo_View"
+			container.sololink = "https://vdo.ninja/?solo&room="+roomname+additional+"&bitrate=20000&codec=h264&proaudio&ab=80&vbr&view="+container.sid+"&label=Solo_View"
 			container.querySelector("[data-sololink]").dataset.sololink = container.sololink;
 		}
 		return container;
