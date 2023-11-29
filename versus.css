@@ -100,9 +100,9 @@ span{
 iframe {
 	border: 0;
 	padding: 0;
-	display: none;
-	height: 0%;
-	width: 0%;
+	display: block;
+	height: 10px;
+	width: 10px;
 	position: absolute;
 	left: -100px;
 	top: -100px;
