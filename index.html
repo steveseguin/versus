@@ -643,7 +643,7 @@
 		
 		if (urlParams.has("vdo")){ // different origin
 			var iframesrc = "https://vdo.ninja/alpha/?debug&salt=vdo.ninja&speakermuted&sendframes&scene&room="+roomname+additional+"&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stream_Monitor";
-			iframe.allow = "cross-origin-isolated;autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;";
+			iframe.allow = "autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;";
 		} else { // compatible same origin (header policy set)
 			var iframesrc = "https://vdo.versus.cam/alpha/?salt=vdo.ninja&speakermuted&sendframes&scene&room="+roomname+additional+"&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stream_Monitor";
 			iframe.allow = "cross-origin-isolated;autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;";
