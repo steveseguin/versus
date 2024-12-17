@@ -3,7 +3,6 @@
 	<title>Versus.cam</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
-	<meta http-equiv="Cross-Origin-Embedder-Policy" content="credentialless">
 	<link rel="stylesheet" href="./versus.css" >
 	<link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
 	<link rel="icon" type="image/png" sizes="32x32" href="./media/favicon-32x32.png" />
@@ -644,7 +643,6 @@
 		
 		if (urlParams.has("vdo")){ // different origin
 			var iframesrc = "https://vdo.ninja/alpha/?debug&salt=vdo.ninja&speakermuted&sendframes&scene&room="+roomname+additional+"&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stream_Monitor";
-			iframe.setAttribute("crossorigin", "true");
 			iframe.allow = "autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;";
 		} else { // compatible same origin (header policy set)
 			var iframesrc = "https://vdo.versus.cam/alpha/?salt=vdo.ninja&speakermuted&sendframes&scene&room="+roomname+additional+"&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stream_Monitor";
