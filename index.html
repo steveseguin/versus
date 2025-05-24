@@ -27,6 +27,38 @@
 			</span>
 		</header>
 		<div id="mainContainer">
+			<div id="onboardingMessage" class="onboarding-container">
+				<div class="onboarding-content">
+					<h2>Welcome to Versus.cam!</h2>
+					<p>Versus.cam helps you manage esports streams with VDO.Ninja</p>
+					<br>
+					<div class="onboarding-steps">
+						<div class="step-item">
+							<span class="step-number">1</span>
+							<div class="step-text">
+								<strong>Share the invite link</strong>
+								<p>Click "Copy Invite Link" above and send it to participants who need to share their screen</p>
+							</div>
+						</div>
+						<div class="step-item">
+							<span class="step-number">2</span>
+							<div class="step-text">
+								<strong>Participants join</strong>
+								<p>When they join and share their screen, their video will appear here automatically</p>
+							</div>
+						</div>
+						<div class="step-item">
+							<span class="step-number">3</span>
+							<div class="step-text">
+								<strong>Add to OBS</strong>
+								<p>Use the "View Link" for each stream as a Browser Source in OBS</p>
+							</div>
+						</div>
+					</div>
+					<br>
+					<button onclick="dismissOnboarding();" class="dismiss-button">Got it!</button>
+				</div>
+			</div>
 		</div>
 		<div id="iframeContainer">
 			<div id='canvas' class="hidden">
@@ -217,6 +249,17 @@
 			document.documentElement.style.setProperty('--chat-width', "0px");
 		} else {
 			document.documentElement.style.setProperty('--chat-width', "450px");
+		}
+	}
+	
+	function dismissOnboarding(){
+		document.getElementById("onboardingMessage").style.display = "none";
+	}
+	
+	function checkOnboarding(){
+		// Hide onboarding if there are any video connections
+		if (streamIDs.length > 0){
+			dismissOnboarding();
 		}
 	}
 	
@@ -876,6 +919,7 @@
 	
 	function updateStreams(full=true){
 		document.getElementById("streamsConnected").innerHTML = streamIDs.length;
+		checkOnboarding(); // Check if we should hide the onboarding message
 		if (iframe){
 			if (full){
 				iframe.contentWindow.postMessage({ requestStatsContinuous: true, getStreamInfo: true  }, "*"); 
