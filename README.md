@@ -85,7 +85,7 @@ Versus.cam leverages the powerful [VDO.Ninja](https://vdo.ninja) IFrame API to p
 
 ## 📝 License
 
-MIT License - Use it for your tournaments, modify it for your needs, make esports production better for everyone.
+Apache-2.0 license - Use it for your tournaments, modify it for your needs, make esports production better for everyone.
 
 ---
 
