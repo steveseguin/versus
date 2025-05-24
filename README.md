@@ -28,7 +28,7 @@ Versus.cam is a powerful stream management tool designed specifically for esport
 
 ### Tournament Setup (10-Player Match)
 Perfect for games like CS:GO, Valorant, or League of Legends:
-- Create room: `MyTournament-Match1`
+- Create room: `MyTournament_Match1`
 - Send invite links to all 10 players
 - Each player shares their screen through the invite link
 - Production team gets individual browser source links for each player
