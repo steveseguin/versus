@@ -1,6 +1,13 @@
 <html>
 <head>
 	<title>Versus.cam</title>
+	<script>
+		if ("serviceWorker" in navigator) {
+			navigator.serviceWorker.register("/coi-serviceworker.js").then(function(reg) {
+				if (!crossOriginIsolated) { location.reload(); }
+			});
+		}
+	</script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
 	<link rel="stylesheet" href="./versus.css" >
@@ -755,14 +762,22 @@
 					if (media.tracks[e.data.trackID].frameWriter) {
 						media.tracks[e.data.trackID].frameWriter.write(e.data.frame);
 					} else if (media.tracks[e.data.trackID].canvas) {
-						const img = new Image();
-						img.onload = () => {
-							media.tracks[e.data.trackID].canvas.width = img.width;
-							media.tracks[e.data.trackID].canvas.height = img.height;
-							media.tracks[e.data.trackID].ctx.drawImage(img, 0, 0);
-							img.remove();
-						};
-						img.src = e.data.frame;
+						if (typeof e.data.frame !== "string") {
+							const frame = e.data.frame;
+							media.tracks[e.data.trackID].canvas.width = frame.displayWidth;
+							media.tracks[e.data.trackID].canvas.height = frame.displayHeight;
+							media.tracks[e.data.trackID].ctx.drawImage(frame, 0, 0);
+							frame.close();
+						} else {
+							const img = new Image();
+							img.onload = () => {
+								media.tracks[e.data.trackID].canvas.width = img.width;
+								media.tracks[e.data.trackID].canvas.height = img.height;
+								media.tracks[e.data.trackID].ctx.drawImage(img, 0, 0);
+								img.remove();
+							};
+							img.src = e.data.frame;
+						}
 					}
 
 					if (!media.streams[e.data.streamID]) {
@@ -791,14 +806,22 @@
 					if (media.tracks[e.data.trackID].frameWriter) {
 						media.tracks[e.data.trackID].frameWriter.write(e.data.frame);
 					} else if (media.tracks[e.data.trackID].canvas) {
-						const img = new Image();
-						img.onload = () => {
-							media.tracks[e.data.trackID].canvas.width = img.width;
-							media.tracks[e.data.trackID].canvas.height = img.height;
-							media.tracks[e.data.trackID].ctx.drawImage(img, 0, 0);
-							img.remove();
-						};
-						img.src = e.data.frame;
+						if (typeof e.data.frame !== "string") {
+							const frame = e.data.frame;
+							media.tracks[e.data.trackID].canvas.width = frame.displayWidth;
+							media.tracks[e.data.trackID].canvas.height = frame.displayHeight;
+							media.tracks[e.data.trackID].ctx.drawImage(frame, 0, 0);
+							frame.close();
+						} else {
+							const img = new Image();
+							img.onload = () => {
+								media.tracks[e.data.trackID].canvas.width = img.width;
+								media.tracks[e.data.trackID].canvas.height = img.height;
+								media.tracks[e.data.trackID].ctx.drawImage(img, 0, 0);
+								img.remove();
+							};
+							img.src = e.data.frame;
+						}
 					}
 				}
 			} // end of video/audio capture
