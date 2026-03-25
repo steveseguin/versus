@@ -691,12 +691,12 @@
 			hash = "&hash="+hash;
 		}
 		
-		if (urlParams.has("vdo")){ // different origin
-			var iframesrc = "https://vdo.ninja/alpha/?debug&salt=vdo.ninja&speakermuted&sendframes&scene&room="+roomname+additional+"&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stream_Monitor";
-			iframe.allow = "autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;";
-		} else { // compatible same origin (header policy set)
+		if (urlParams.has("local")){ // self-hosted vdo.versus.cam (requires COOP/COEP headers on that server)
 			var iframesrc = "https://vdo.versus.cam/alpha/?salt=vdo.ninja&speakermuted&sendframes&scene&room="+roomname+additional+"&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stream_Monitor";
 			iframe.allow = "cross-origin-isolated;autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;";
+		} else { // vdo.ninja (cross-origin isolated, sendframes works)
+			var iframesrc = "https://vdo.ninja/alpha/?salt=vdo.ninja&speakermuted&sendframes&scene&room="+roomname+additional+"&manual&bitrate=300&viewheight=180&viewwidth=320&cleanoutput&label=Stream_Monitor";
+			iframe.allow = "autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;";
 		}
 		// note: it's possible to set the width/height dyanmically via the IFRAME API also now. just call on video track load.
 		
