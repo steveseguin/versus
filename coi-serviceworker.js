@@ -34,7 +34,7 @@ self.addEventListener("fetch", function (event) {
         });
       })
       .catch(function (e) {
-        console.error(e);
+        throw e;
       })
   );
 });
