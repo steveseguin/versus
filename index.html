@@ -435,6 +435,8 @@
 	}
 	if (viewList){
 		viewList = viewList.split(",");
+	} else {
+		viewList = [];
 	}
 	
 	var password = false;
@@ -1441,7 +1443,7 @@
 			setStorage("savedRoom", {roomname:roomname,roompassword:password,viewlist:viewList}, 9999);
 		}
 		
-		if (iframe && streamID && !(streamID in streamIDs)){ // don't request what we already have requested.
+		if (iframe && streamID && !streamIDs.includes(streamID)){ // don't request what we already have requested.
 			iframe.contentWindow.postMessage({ requestStream: streamID }, "*");
 			document.getElementById("modal").style.display = "none";
 		}
