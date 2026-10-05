@@ -489,7 +489,11 @@
 	function startLastRoom(){
 		document.getElementById("roomname").value = document.getElementById("savedroomname").value;
 		document.getElementById("roompassword").type = "password";
-		document.getElementById("roompassword").value = document.getElementById("savedroompassword").value;
+		var savedPassword = document.getElementById("savedroompassword").value;
+		try {
+			savedPassword = decodeURIComponent(savedPassword);
+		} catch (e) {}
+		document.getElementById("roompassword").value = savedPassword;
 		
 		if (!viewList){
 			viewList = [];
