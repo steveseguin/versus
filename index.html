@@ -1236,7 +1236,7 @@
 							return;
 						}
 						
-						var ele = document.querySelector("[data-action-type='stats-graphs-details-container'][data-uid='"+this.dataset.uid+"'] .bitrate-dropdown");
+						var ele = this.closest('[data-action-type="stats-graphs-details-container"]').querySelector(".bitrate-dropdown");
 						if (ele){
 							ele.classList.toggle("hidden");
 						}
@@ -1298,7 +1298,7 @@
 							console.warn("remote control not enabled");
 							return;
 						}
-						var ele = document.querySelector("[data-action-type='stats-graphs-details-container'][data-uid='"+this.dataset.uid+"'] .resolution-dropdown");
+						var ele = this.closest('[data-action-type="stats-graphs-details-container"]').querySelector(".resolution-dropdown");
 						if (ele){
 							ele.classList.toggle("hidden");
 						}
